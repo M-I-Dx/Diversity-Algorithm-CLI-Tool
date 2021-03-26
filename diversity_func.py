@@ -40,15 +40,14 @@ def get_matrix(MODEL_PATH, DATA_PATH, img_size, embedding_size, model_type="SIMC
                             transforms.Lambda(to_tensor)
                             ])
     dataset = ImageFolder(DATA_PATH, transform = t)
-    if model_type = "SIMCLR":
+    if model_type == "SIMCLR":
         model = SIMCLR.SIMCLR.load_from_checkpoint(MODEL_PATH, DATA_PATH)
     else:
         model = SIMSIAM.SIMSIAM.load_from_checkpoint(MODEL_PATH, DATA_PATH)
     model.eval()
     model.cuda()
-    size = embedding_size
     with torch.no_grad():
-        data_matrix = torch.empty(size = (0, size)).cuda()
+        data_matrix = torch.empty(size = (0, embedding_size)).cuda()
         bs = 32
         if len(dataset) < bs:
           bs = 1
